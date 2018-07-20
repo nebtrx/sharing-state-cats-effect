@@ -1,3 +1,5 @@
+import sbt.Resolver
+
 name := "sharing-state-cats-effect"
 version := "0.0.1-SNAPSHOT"
 
@@ -14,9 +16,12 @@ scalacOptions ++= Seq(
   "-Ypartial-unification" // allow the compiler to unify type constructors of different arities
 )
 
+resolvers += Resolver.sonatypeRepo("snapshots")
+
 libraryDependencies ++= Seq(
   "org.typelevel" %% "cats-core" % "1.0.0-MF",
-  "org.typelevel" %% "cats-effect" % "1.0.0-RC2"
+  "org.typelevel" %% "cats-effect" % "1.0.0-RC2",
+  "org.scalaz" %% "scalaz-zio" % "0.1-SNAPSHOT"
 )
 
 addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.3")

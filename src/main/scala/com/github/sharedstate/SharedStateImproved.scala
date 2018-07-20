@@ -33,11 +33,11 @@ object SharedStateImproved extends IOApp {
   }
 
   def masterProcess: IO[Unit] = {
-    val myState: Ref[IO, List[String]] = Ref.of[IO, List[String]](List.empty[String]).unsafeRunSync()
-
-    val ioa = List(process1(myState), process2(myState), process3(myState)).parSequence.void
-    ioa *> myState.get.flatMap(rs => putStrLn(rs.toString))
-  }
+    Ref.of[IO, List[String]](List.empty[String]).flatMap(state => {
+      val ioa = List(process1(state), process2(state), process3(state)).parSequence.void
+      ioa *> state.get.flatMap(rs => putStrLn(rs.toString))
+    })
+  }                      
 
   override def run(args: List[String]): IO[ExitCode] =
     masterProcess.as(ExitCode.Success)
